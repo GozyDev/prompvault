@@ -1,13 +1,14 @@
 import { User } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import {Usertype} from "@/lib/type"
 
 export default function UserPCard({
   user,
   color,
   textColor
 }: {
-  user: { email: string; imageUrl: string; name: string },
+  user:Usertype,
   color:string
   textColor:string
 }) {
@@ -18,7 +19,7 @@ export default function UserPCard({
 
   return (
     <div
-      className="flex items-center gap-2  rounded-full  "
+      className="flex items-center gap-2  rounded-full z-[-1] group "
       aria-label="Profile"
     >
       {userDetails.imageUrl ? (
@@ -27,7 +28,7 @@ export default function UserPCard({
           alt="Profile"
           width={32}
           height={32}
-          className="rounded-full object-cover w-10 h-10"
+          className="rounded-full object-cover w-10 h-10 cursor-pointer"
         />
       ) : (
         <span className={`${color}  rounded-full w-10 h-10 flex items-center justify-center text-white `}>
@@ -35,7 +36,7 @@ export default function UserPCard({
         </span>
       )}
       {userDetails.name && (
-        <span className={`font-bold ${textColor} text-md truncate cursive  tracking-tight`}>
+        <span className={`block font-bold ${textColor} text-md truncate cursive  tracking-tight group-hover:underline`}>
           {userDetails.name}
         </span>
       )}

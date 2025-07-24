@@ -7,6 +7,8 @@ type PromptStore = {
   setPrompts: (data: Prompt[]) => void;
   clearPrompts: () => void;
   updatePrompt: (id: string, newData: Partial<Prompt>) => void;
+    setHasFetched: (value: boolean) => void;
+     hasFetched: boolean;
 };
 
 export const usePromptStore = create<PromptStore>((set) => ({
@@ -19,4 +21,6 @@ export const usePromptStore = create<PromptStore>((set) => ({
         prompt.id === id ? { ...prompt, ...newData } : prompt
       ),
     })),
+    setHasFetched: (value) => set({ hasFetched: value }),
+      hasFetched:false
 }));

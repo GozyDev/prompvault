@@ -2,33 +2,12 @@ import { Bookmark, Heart, LoaderCircle, Upload } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { usePromptStore } from "@/stores/usePromptStore";
-type PromptPreview = {
-  id: string;
-  title: string;
-  content: string;
-  imageUrl: string;
-  categories: string[]; // stored as stringified array
-  tags: string[];
-  metadata: string[];
-  favorites: { userId: string }[];
-  bookmarks: { userId: string }[];
-  user: {
-    email: string;
-    name: string;
-    imageUrl: string;
-  };
-  remixes: any[];
-  _count: {
-    favorites: number;
-    bookmarks: number;
-    remixes: number;
-  };
-};
+import { Prompt } from "@/lib/type";
 export default function Stats({
   prompt,
   dbUserId,
 }: {
-  prompt: PromptPreview;
+  prompt: Prompt;
   dbUserId: string;
 }) {
   const [hasLiked, setHasLiked] = useState(false);
@@ -57,53 +36,56 @@ export default function Stats({
     }
   }, [prompt, dbUserId]);
 
- const handleBookmarkToggle = async (promptId: string) => {
-  try {
-    console.log("Toggling bookmark for:", promptId);
-    setIsBookmarkinging(true);
+  const handleBookmarkToggle = async (promptId: string) => {
+    try {
+      console.log("Toggling bookmark for:", promptId);
+      setIsBookmarkinging(true);
 
-    const newState = !hasBookedMark;
-    setHasBookedMark(newState);
-    setOptimisticBookedMark((prev) => prev + (newState ? 1 : -1));
+      const newState = !hasBookedMark;
+      setHasBookedMark(newState);
+      setOptimisticBookedMark((prev) => prev + (newState ? 1 : -1));
 
-    // ✅ Fix: BookCount → prompt._count.bookmarks
-    const bookCount = prompt._count.bookmarks;
+      // ✅ Fix: BookCount → prompt._count.bookmarks
+      const bookCount = prompt._count.bookmarks;
 
-    // ✅ Fix: updatePrompt was modifying "favorites", not "bookmarks"
-    updatePrompt(prompt.id, {
-      bookmarks: newState
-        ? [...prompt.bookmarks, { userId: dbUserId }]
-        : prompt.bookmarks.filter((bm) => bm.userId !== dbUserId),
-      _count: {
-        ...prompt._count,
-        bookmarks: newState ? bookCount + 1 : bookCount - 1,
-      },
-    });
+      // ✅ Fix: updatePrompt was modifying "favorites", not "bookmarks"
+      updatePrompt(prompt.id, {
+        bookmarks: newState
+          ? [...prompt.bookmarks, { userId: dbUserId, promptId: prompt.id }]
+          : prompt.bookmarks.filter((bm) => bm.userId !== dbUserId),
+        _count: {
+          ...prompt._count,
+          bookmarks: newState ? bookCount + 1 : bookCount - 1,
+        },
+      });
 
-    const res = await fetch("http://localhost:5000/api/bookmark", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ promptId }),
-    });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/bookmark`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ promptId }),
+        }
+      );
 
-    if (!res.ok) {
-      const errorBody = await res.json();
-      toast.error(errorBody.error || "Failed to update bookmark");
-    } else {
-      toast.success("Bookmark updated");
+      if (!res.ok) {
+        const errorBody = await res.json();
+        toast.error(errorBody.error || "Failed to update bookmark");
+      } else {
+        toast.success("Bookmark updated");
+      }
+    } catch (error) {
+      console.error("Error toggling bookmark:", error);
+      toast.error("Error updating bookmark");
+
+      // Revert local state
+      setOptimisticBookedMark(prompt._count.bookmarks);
+      setHasBookedMark(prompt.bookmarks.some((bm) => bm.userId === dbUserId));
+    } finally {
+      setIsBookmarkinging(false);
     }
-  } catch (error) {
-    console.error("Error toggling bookmark:", error);
-    toast.error("Error updating bookmark");
-
-    // Revert local state
-    setOptimisticBookedMark(prompt._count.bookmarks);
-    setHasBookedMark(prompt.bookmarks.some((bm) => bm.userId === dbUserId));
-  } finally {
-    setIsBookmarkinging(false);
-  }
-};
+  };
 
   const handleFavoriteToggle = async (promptId: string) => {
     try {
@@ -117,7 +99,7 @@ export default function Stats({
       // ✅ Update global store
       updatePrompt(prompt.id, {
         favorites: newState
-          ? [...prompt.favorites, { userId: dbUserId }]
+          ? [...prompt.favorites, { userId: dbUserId, promptId: prompt.id }]
           : prompt.favorites.filter((fav) => fav.userId !== dbUserId),
         _count: {
           ...prompt._count,
@@ -125,12 +107,15 @@ export default function Stats({
         },
       });
 
-      const res = await fetch(`http://localhost:5000/api/favorite`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ promptId }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/favorite`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ promptId }),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to toggle favorite");
 
@@ -193,10 +178,6 @@ export default function Stats({
           </span>
         </div>
       </button>
-
-      <div className="flex items-center group cursor-pointer">
-        <Upload className="w-7 h-7 text-gray-500 group-hover:text-blue-500 transition-colors" />
-      </div>
     </div>
   );
 }

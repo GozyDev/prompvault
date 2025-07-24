@@ -1,8 +1,13 @@
 "use client";
 
-import { 
-  Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger 
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
+import { usePromptStore } from "@/stores/usePromptStore";
 import { FilePenLine, Pencil } from "lucide-react";
 import { useEffect, useState, useCallback, useRef } from "react";
 import Select from "react-select";
@@ -45,25 +50,37 @@ export default function EditDialog({
   editDetail: EditDetailData;
   id: string;
 }) {
-  // State management
-  const [title, setTitle] = useState(editDetail.title);
-  const [content, setContent] = useState(editDetail.content);
-  const [metaData, setMetaData] = useState(editDetail.metadata.join(", "));
-  const [tags, setTags] = useState(editDetail.tags.join(", "));
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(editDetail.categories);
+  // ⛳ Force reactivity by tracking the whole prompts array
+  const prompts = usePromptStore((state) => state.prompts);
+  const updatePrompt = usePromptStore((state) => state.updatePrompt);
+  const prompt = prompts.find((p) => p.id === id);
+
+  if (!prompt) return null;
+
+  const [title, setTitle] = useState(prompt.title);
+  const [content, setContent] = useState(prompt.content);
+  const [metaData, setMetaData] = useState(prompt.metadata.join(", "));
+  const [tags, setTags] = useState(prompt.tags.join(", "));
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    prompt.categories
+  );
   const [isClient, setIsClient] = useState(false);
   const [loading, setLoading] = useState(false);
-  
-  // Refs
   const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     setIsClient(true);
-    return () => {
-      // Cleanup async operations on unmount
-      abortControllerRef.current?.abort();
-    };
+    return () => abortControllerRef.current?.abort();
   }, []);
+
+  // 🧠 Sync UI with latest store updates
+  useEffect(() => {
+    setTitle(prompt.title);
+    setContent(prompt.content);
+    setTags(prompt.tags.join(", "));
+    setMetaData(prompt.metadata.join(", "));
+    setSelectedCategories(prompt.categories);
+  }, [prompt]);
 
   const handleCategoryChange = useCallback((selectedOptions: any) => {
     setSelectedCategories(selectedOptions.map((opt: any) => opt.value));
@@ -71,10 +88,8 @@ export default function EditDialog({
 
   const handleSubmit = useCallback(async () => {
     setLoading(true);
-    
-    // Create new AbortController for the request
     abortControllerRef.current = new AbortController();
-    
+
     try {
       const response = await fetch(`http://localhost:5000/api/prompt/${id}`, {
         method: "PUT",
@@ -84,8 +99,11 @@ export default function EditDialog({
           title,
           content,
           categories: selectedCategories,
-          tags: tags.split(",").map(tag => tag.trim()).filter(Boolean),
-          metadata: metaData.split(",").map(item => item.trim()).filter(Boolean),
+          tags: tags.split(",").map((tag) => tag.trim()).filter(Boolean),
+          metadata: metaData
+            .split(",")
+            .map((item) => item.trim())
+            .filter(Boolean),
         }),
         signal: abortControllerRef.current.signal,
       });
@@ -95,6 +113,8 @@ export default function EditDialog({
         throw new Error(errorData.error || "Update failed");
       }
 
+      const updatedPrompt = await response.json();
+      updatePrompt(id, updatedPrompt);
       toast.success("Updated successfully");
     } catch (error: any) {
       if (error.name !== "AbortError") {

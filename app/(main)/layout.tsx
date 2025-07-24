@@ -3,12 +3,12 @@ import { Geist_Mono } from "next/font/google";
 import { Poppins } from "next/font/google";
 import { Roboto } from "next/font/google";
 import { Montserrat } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 
 import { ToastContainer } from "react-toastify";
 import Navbar from "@/components/navbar";
 import MobileNavBar from "@/components/mobile";
-import Search from "../components/search";
+import Search from "../../components/search";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -44,30 +44,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${roboto.variable} ${montserrat.variable}  antialiased bg-white`}>
+      <body
+        className={`${poppins.variable} ${roboto.variable} ${montserrat.variable}  antialiased bg-white`}
+      >
         <div className="flex min-h-screen">
           {/* Fixed sidebar for desktop */}
           <aside className="hidden md:flex md:flex-col md:w-[80px] bg-white border-r border-gray-300 z-30 fixed top-0 left-0 h-screen sh">
             <Navbar />
           </aside>
-          <div className="flex-1 md:ml-[80px]">
+          <div className="relative  w-full md:ml-[80px]">
             {/* Fixed search bar for desktop */}
-            <div className="hidden md:block fixed top-0 left-[80px] right-0 z-20 bg-white  p-[10px] px-[25px]">
-              <Search />
-            </div>
+         
             {/* Add padding top for main content to avoid overlap with fixed search bar */}
-            <main className="pt-0 px-4  md:pt-[74px]">
-              {children}
-            </main>
+            <main className="">{children}</main>
           </div>
           <ToastContainer />
         </div>
         {/* Mobile search bar above mobile nav, fixed at top */}
-        <div className="block md:hidden fixed top-0 left-0 right-0 z-20 bg-white border-b border-gray-200 px-4 pt-4 pb-2">
+        <div className="hidden fixed top-0 left-0 right-0 z-20 bg-white border-b border-gray-200 px-4 pt-4 pb-2">
           <Search />
         </div>
         {/* Add padding bottom for mobile content to avoid overlap with nav bar */}
-        <div className="block md:hidden" style={{ paddingBottom: '70px' }}></div>
+        <div
+          className="block md:hidden"
+          style={{ paddingBottom: "70px" }}
+        ></div>
         {/* Mobile bottom nav bar */}
         <MobileNavBar />
       </body>

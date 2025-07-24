@@ -1,4 +1,5 @@
 import Specific from "@/components/getSpecificPrompt";
+import ProfileEdit from "@/components/profileEdit";
 
 export default async function DynamicPage({
   params,
@@ -7,7 +8,7 @@ export default async function DynamicPage({
 }) {
   const { id } = await params;
 
-  return <div className="pt-[20px] ">
+  return <div className="md:pt-[20px] ">
     <Specific id={id} />
   </div>;
 }
