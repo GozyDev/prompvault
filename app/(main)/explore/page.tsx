@@ -29,7 +29,6 @@ const Explore = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftScroll, setShowLeftScroll] = useState(false);
   const [showRightScroll, setShowRightScroll] = useState(true);
-  console.log(showLeftScroll);
 
   // Category options with icons
   const categoryOptions = [
@@ -65,14 +64,13 @@ const Explore = () => {
 
   // Check scroll position to show/hide buttons
   const checkScrollPosition = () => {
+    console.log("checking");
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } =
         scrollContainerRef.current;
       setShowLeftScroll(scrollLeft > 0);
       setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 10);
     }
-
-    alert("working");
   };
 
   useEffect(() => {
@@ -80,9 +78,12 @@ const Explore = () => {
       async function fetchData() {
         try {
           setLoading(true);
-          const promptsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL }/api/prompt`, {
-            credentials: "include",
-          });
+          const promptsRes = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/prompt`,
+            {
+              credentials: "include",
+            }
+          );
 
           if (!promptsRes.ok) throw new Error("Failed to fetch prompts");
 
@@ -117,19 +118,21 @@ const Explore = () => {
 
   useEffect(() => {
     const container = scrollContainerRef.current;
-    if (container) {
-      // Initial check
-      checkScrollPosition();
+    if (!container) return;
 
-      // Add scroll event listener
-      container.addEventListener("scroll", checkScrollPosition);
+    const handleScroll = () => {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      setShowLeftScroll(scrollLeft > 0);
+      setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 1);
+    };
 
-      // Cleanup
-      return () => {
-        container.removeEventListener("scroll", checkScrollPosition);
-      };
-    }
-  }, []);
+    handleScroll(); // Check immediately
+    container.addEventListener("scroll", handleScroll);
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, [userId]);
 
   if (loading) {
     return (
@@ -193,7 +196,7 @@ const Explore = () => {
   return (
     <div className="min-h-screen bg-white z ">
       {/* Category Filter */}
-      <div className="fixed left-0  md:pl-[90px] top-0 z-10 bg-white p-1 pt-3 md:pt-6  w-full ">
+      <div className="fixed left-0  md:pl-[90px] top-0 z-10 bg-white px-2 py-2  md:pt-3  w-full ">
         <div className="flex relative   w-full">
           {/* Left scroll button */}
           {showLeftScroll && (
@@ -202,7 +205,7 @@ const Explore = () => {
               className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full shadow-md p-1.5 hover:bg-gray-100 transition-colors"
               aria-label="Scroll left"
             >
-              <ChevronLeft className="w-6 h-6 text-gray-700" />
+              <ChevronLeft className="w-8 h-8 text-gray-700" />
             </button>
           )}
 
@@ -213,14 +216,14 @@ const Explore = () => {
               className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full shadow-lg p-1.5 hover:bg-gray-100 transition-colors"
               aria-label="Scroll right"
             >
-              <ChevronRight className="w-7 h-7 text-gray-700" />
+              <ChevronRight className="w-8 h-8 text-gray-700" />
             </button>
           )}
 
           {/* Scrollable categories */}
           <div
             ref={scrollContainerRef}
-            className="w-full flex gap-3 overflow-x-auto scrollbar-hide pb-2 scroll-smooth"
+            className="w-full flex gap-3 overflow-x-auto scrollbar-hide  scroll-smooth "
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {categoryOptions.map((option) => (
@@ -243,14 +246,14 @@ const Explore = () => {
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto p-2 md:px-4 pt-[80px]">
+      <div className="mx-auto p-2 md:px-4 pt-[70px]">
         {/* Prompts Grid */}
         <ExploreM prompts={filteredPrompts} dbUserId={userId} />
 
         {/* Empty State */}
         {filteredPrompts.length === 0 && !loading && (
           <div className="text-center py-12">
-            <div className="bg-gray-100 p-4 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+            <div className="bg-gray-100 p-4 rounded-full w-30 h-20 flex items-center justify-center mx-auto mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-10 w-10 text-gray-400"

@@ -44,7 +44,6 @@ const CATEGORY_OPTIONS = [
 ];
 
 export default function EditDialog({
-  editDetail,
   id,
 }: {
   editDetail: EditDetailData;
@@ -91,22 +90,28 @@ export default function EditDialog({
     abortControllerRef.current = new AbortController();
 
     try {
-      const response = await fetch(`http://localhost:5000/api/prompt/${id}`, {
-        method: "PUT",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          content,
-          categories: selectedCategories,
-          tags: tags.split(",").map((tag) => tag.trim()).filter(Boolean),
-          metadata: metaData
-            .split(",")
-            .map((item) => item.trim())
-            .filter(Boolean),
-        }),
-        signal: abortControllerRef.current.signal,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/prompt/${id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title,
+            content,
+            categories: selectedCategories,
+            tags: tags
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter(Boolean),
+            metadata: metaData
+              .split(",")
+              .map((item) => item.trim())
+              .filter(Boolean),
+          }),
+          signal: abortControllerRef.current.signal,
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();

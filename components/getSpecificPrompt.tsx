@@ -175,9 +175,9 @@ export default function Specific({ id }: { id: string }) {
             {/* Remix Indicator */}
             {originalPrompt && (
               <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg flex items-start">
-                <LinkIcon className="w-5 h-5 text-purple-600 mt-0.5 mr-2 flex-shrink-0" />
+                <LinkIcon className="w-5 h-5 text-purple-600 mt-0.5 mr-2 flex-shrink-0 "  />
                 <div>
-                  <p className="text-sm font-medium text-purple-800">
+                  <p className="text-sm font-medium text-purple-800 relative">
                     Remixed from:{" "}
                     <Link
                       href={`/prompt/${originalPrompt.id}`}
@@ -240,7 +240,7 @@ export default function Specific({ id }: { id: string }) {
                       : `${prompt.content.slice(0, 200)}...`}
                     <button
                       onClick={toggleShow}
-                      className="text-sm py-1 px-2 bg-purple-600 text-white rounded-full cursor-pointer ml-2 hover:bg-purple-700 transition-colors"
+                      className="py-1 px-2 font-bold text-purple-900 rounded-full cursor-pointer ml-2 hover:text-purple-700 transition-colors"
                     >
                       {show ? "Show less" : "Show more"}
                     </button>

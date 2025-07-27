@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { User, Globe, Info, Sparkles } from "lucide-react";
+import { User,  Info, Sparkles } from "lucide-react";
 import { toast } from "react-toastify";
 import useProfileStore from "@/stores/useProfileStore";
 
@@ -27,7 +27,6 @@ export default function ProfileEdit({
 }) {
   // Initial profile data (would typically come from props or context)
   const setProfileStore = useProfileStore((state) => state.setProfileStore);
-  console.log(id, "from profileedit");
   const [profile, setProfile] = useState<ProfileData>({
     name: profileData.name || "",
     bio: profileData.bio || "",

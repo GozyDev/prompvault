@@ -60,4 +60,6 @@ export interface Profile {
   createdAt: string;
 }
 
-
+export type PayLoad = {
+id:string
+} | undefined

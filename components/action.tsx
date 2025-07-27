@@ -38,7 +38,7 @@ export default function Stats({
 
   const handleBookmarkToggle = async (promptId: string) => {
     try {
-      console.log("Toggling bookmark for:", promptId);
+      
       setIsBookmarkinging(true);
 
       const newState = !hasBookedMark;
@@ -72,9 +72,7 @@ export default function Stats({
       if (!res.ok) {
         const errorBody = await res.json();
         toast.error(errorBody.error || "Failed to update bookmark");
-      } else {
-        toast.success("Bookmark updated");
-      }
+      } 
     } catch (error) {
       console.error("Error toggling bookmark:", error);
       toast.error("Error updating bookmark");
@@ -119,7 +117,7 @@ export default function Stats({
 
       if (!res.ok) throw new Error("Failed to toggle favorite");
 
-      toast.success("Success");
+      
     } catch (error) {
       console.error("Error toggling favorite:", error);
       toast.error("Error");

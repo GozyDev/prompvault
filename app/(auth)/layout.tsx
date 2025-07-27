@@ -45,7 +45,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${roboto.variable} ${montserrat.variable}  antialiased bg-white`}
       >
-        <div className="min-h-screen border w-full">
+        <div className="min-h-screen w-full">
             <div>{children}</div>
           <ToastContainer />
         </div>

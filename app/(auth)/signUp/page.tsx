@@ -4,6 +4,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { toast } from 'react-toastify';
 import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type SignUpState = {
   name: string;
@@ -24,6 +25,7 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter()
 
   const validateForm = (): boolean => {
     const newErrors: Partial<SignUpState> = {};
@@ -41,7 +43,7 @@ const SignUp = () => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
     
-    // Clear error when user types
+    // Clear error when user types  
     if (errors[name as keyof SignUpState]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
@@ -81,6 +83,7 @@ const SignUp = () => {
       const responseData = await res.json();
       toast.success("Account created successfully! Welcome aboard!");
       // Redirect to dashboard or login page
+      router.push("/explore")
     } catch (error: any) {
       console.error("Sign Up Error:", error);
       toast.error(error.message || "Failed to create account. Please try again.");
@@ -99,7 +102,7 @@ const SignUp = () => {
           <div className="space-y-4">
             {/* Name Field */}
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none ">
                 <User className="h-5 w-5 text-gray-400" />
               </div>
               <input
