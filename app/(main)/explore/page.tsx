@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { usePromptStore } from "@/stores/usePromptStore";
 import { ExploreM } from "@/components/explore";
 import getUser from "@/components/me";
-import { toast } from "react-toastify";
+
 
 import {
   ChevronLeft,
@@ -62,7 +62,6 @@ const Explore = () => {
     }
   };
 
-  // Check scroll position to show/hide buttons
   const checkScrollPosition = () => {
     console.log("checking");
     if (scrollContainerRef.current) {
@@ -92,7 +91,6 @@ const Explore = () => {
           setHasFetched(true);
         } catch (err: any) {
           setError(err.message || "Error loading prompts");
-          toast.error(err.message || "Error loading prompts");
         } finally {
           setLoading(false);
         }
@@ -120,19 +118,24 @@ const Explore = () => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    const handleScroll = () => {
-      const { scrollLeft, scrollWidth, clientWidth } = container;
-      setShowLeftScroll(scrollLeft > 0);
-      setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 1);
-    };
+    // Initial check
+    checkScrollPosition();
 
-    handleScroll(); // Check immediately
-    container.addEventListener("scroll", handleScroll);
+    // Add event listener
+    container.addEventListener("scroll", checkScrollPosition);
+
+    // Add resize listener since container width affects scroll
+    window.addEventListener("resize", checkScrollPosition);
 
     return () => {
-      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener("scroll", checkScrollPosition);
+      window.removeEventListener("resize", checkScrollPosition);
     };
-  }, [userId]);
+  }, [loading]);
+
+  // useEffect(() => {
+  //   setPageLoaded(true);
+  // },[]);
 
   if (loading) {
     return (
@@ -196,16 +199,16 @@ const Explore = () => {
   return (
     <div className="min-h-screen bg-white z ">
       {/* Category Filter */}
-      <div className="fixed left-0  md:pl-[90px] top-0 z-10 bg-white px-2 py-2  md:pt-3  w-full ">
+      <div className="fixed left-0  md:pl-[90px] top-0 z-10 bg-white px-2 py-2 md:py-5  md:pt-5  w-full ">
         <div className="flex relative   w-full">
           {/* Left scroll button */}
           {showLeftScroll && (
             <button
               onClick={() => scrollCategories("left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full shadow-md p-1.5 hover:bg-gray-100 transition-colors"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-md p-1.5 hover:bg-gray-100 transition-colors"
               aria-label="Scroll left"
             >
-              <ChevronLeft className="w-8 h-8 text-gray-700" />
+              <ChevronLeft className="w-8 h-8 text-white" />
             </button>
           )}
 
@@ -213,10 +216,10 @@ const Explore = () => {
           {showRightScroll && (
             <button
               onClick={() => scrollCategories("right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full shadow-lg p-1.5 hover:bg-gray-100 transition-colors"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20  rounded-full shadow-lg p-1.5 bg-gradient-to-r from-blue-500 to-purple-600  hover:bg-gray-100 transition-colors"
               aria-label="Scroll right"
             >
-              <ChevronRight className="w-8 h-8 text-gray-700" />
+              <ChevronRight className="w-8 h-8 text-white" />
             </button>
           )}
 
@@ -229,7 +232,7 @@ const Explore = () => {
             {categoryOptions.map((option) => (
               <button
                 key={option.value}
-                className={`flex-shrink-0 flex items-center gap-1.5 px-5 py-3 rounded-full  font-medium transition-all ${
+                className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-full text-sm  font-medium transition-all cursor-pointer ${
                   selectedCategory === option.value ||
                   (!selectedCategory && option.value === "all")
                     ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md"
@@ -246,7 +249,7 @@ const Explore = () => {
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto p-2 md:px-4 pt-[70px]">
+      <div className="mx-auto p-2 md:px-4  pt-[60px] md:pt-[85px]">
         {/* Prompts Grid */}
         <ExploreM prompts={filteredPrompts} dbUserId={userId} />
 

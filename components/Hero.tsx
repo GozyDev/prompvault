@@ -4,6 +4,7 @@ import { Rocket } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 import MobileVideo from "./MobileVideo";
 import { PayLoad } from "@/lib/type";
@@ -22,8 +23,8 @@ export default function Hero({ user }:{user:PayLoad}) {
       {/* Content Section */}
       <div className="">
         <div className="flex flex-col mx-auto  md:items-center w-full gap-2 ">
-          <h1 className=" uppercase text-3xl text-center md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-purple-800 ">
-            All Your Favorite AI Prompts, in One Clean Vault
+          <h1 className=" text-3xl text-center md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-purple-800 ">
+            All your favorite ai prompts, in one clean vault
           </h1>
 
           <p className="text-sm sm:text-lg text-gray-600  leading-relaxed text-center">
@@ -56,15 +57,7 @@ export default function Hero({ user }:{user:PayLoad}) {
         <div className="relative">
           <div className="absolute -inset-4 rounded-2xl bg-gradient-to-tr from-blue-400/20 to-purple-400/20 blur-lg"></div>
           <div className="relative rounded-2xl overflow-hidden border border-white/20 shadow-2xl transform transition-transform hover:-translate-y-1 hiiden">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-auto object-cover"
-              poster="/video/poster.jpg" // Add a poster frame for loading
-              src="/video/Macbook-Air-localhost-1h_tmyx4vh6e7j.webm"
-            />
+          <img src='/Macbook-Air-localhost.png' alt="" width={30} height={30} className="w-full h-full"/>
           </div>
         </div>
       </div>

@@ -40,7 +40,7 @@ export default function HomePage() {
       </header>
       <main
         id="home"
-        className="pt-[90px] md:pt-[110px] px-4 max-w-7xl  mx-auto"
+        className="pt-[70px] md:pt-[110px] px-4 max-w-7xl  mx-auto "
       >
         <Hero user={user}></Hero>
 

@@ -44,11 +44,9 @@ export default function AlertLogOutMobile() {
           className={`flex flex-col items-center justify-center p-3 rounded-2xl transition-all duration-300 ease-in-out text-gray-800`}
         >
           <div className="relative">
-            <LogOutIcon className={`w-6 h-6 transition-transform`} />
+            <LogOutIcon className={`w-6 h-6  transition-transform`} />
           </div>
-          <span className={`text-xs mt-1 font-medium  text-gray-800`}>
-            logout
-          </span>
+          
         </div>
       </AlertDialogTrigger>
 

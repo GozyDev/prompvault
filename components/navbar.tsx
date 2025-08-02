@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Home, SquarePlus, User, LogOut } from "lucide-react";
+import { Home, SquarePlus } from "lucide-react";
 import ProfileButton from "./profileButton";
 import { useEffect, useState } from "react";
 import AlertLogOut from "./AleartLogout";
-
+import Image from "next/image";
 
 const navItems = [
   {
@@ -19,7 +19,7 @@ const navItems = [
   {
     href: "/create",
     label: "Create",
-    icon: <SquarePlus strokeWidth={2.4} />,
+    icon: <SquarePlus strokeWidth={2.4}  />,
     activeColor: "bg-gradient-to-r from-blue-500 to-purple-600 text-black",
     inactiveColor: "text-gray-500 hover:bg-gray-200 hover:text-black",
     tooltip: "Create Prompt",
@@ -29,7 +29,7 @@ const navItems = [
 const Navbar = () => {
   const pathname = usePathname();
   const [activePath, setActivePath] = useState("");
-  const router = useRouter()
+  const router = useRouter();
 
   // Handle profile routes separately
   useEffect(() => {
@@ -42,26 +42,17 @@ const Navbar = () => {
   }, [pathname]);
 
   return (
-    <nav className="h-full w-full flex flex-col items-center py-4 bg-gradient-to-b from-white to-gray-50 border-r border-gray-100">
+    <nav className="h-full w-full flex flex-col items-center py-4 border bg-gradient-to-b from-white to-gray-50 border-r border-gray-100 cursor-pointer">
       <ul className="flex flex-col gap-5 w-full items-center">
         {/* Logo */}
         <div className="flex flex-col items-center mb-3">
-          <Link href='/'>
-             <div className="flex items-center gap-3">
-          <div className="relative w-12 h-12 flex items-center justify-center bg-black rounded">
-            {/* Diagonal background bar with gradient */}
-            <div className="absolute z-1  inset-0 overflow-hidden">
-              <div className="absolute top-1/2 left-1/2 w-[150%] h-1 bg-gradient-to-r from-blue-600 to-purple-600 transform -translate-x-1/2 -translate-y-1/2 rotate-45" />
-            </div>
-            {/* Gradient text with modern styling */}
-            <span className="relative z-10 text-3xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent tracking-tighter">
-              PV
-            </span>
+          <div
+            className="flex items-center gap-3 "
+            onClick={() => router.push("/")}
+          >
+            <Image src="/favicon.ico" alt="Logo" width={50} height={50}></Image>
           </div>
-          
-        </div>
-          </Link> 
-        </div>
+        </div>  
 
         {/* Navigation Items */}
         {navItems.map((item) => {
@@ -72,8 +63,7 @@ const Navbar = () => {
               className="w-full flex justify-center group relative "
             >
               <button
-              onClick={()=> router.push(item.href) }
-               
+                onClick={() => router.push(item.href)}
                 className={`flex flex-col items-center justify-center w-14 h-14  transition-all duration-300 ease-in-out  rounded-2xl ${
                   isActive ? "text-black" : "text-gray-600"
                 } `}
@@ -103,7 +93,7 @@ const Navbar = () => {
           );
         })}
 
-       <AlertLogOut/>
+        <AlertLogOut />
 
         {/* Profile Button */}
         <li className="group relative">

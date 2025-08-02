@@ -19,7 +19,7 @@ const ProfileImageUpload = ({ profile }: { profile: Profile }) => {
       setPreviewUrl(reader.result as string);
     };
     reader.readAsDataURL(file);
-    console.log(file);
+ 
 
     // Upload to backend
     setIsUploading(true);

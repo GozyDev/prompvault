@@ -59,7 +59,7 @@ export default function ProfileButton() {
   return (
     <Link
       href={`/profile/${user.id}`}
-      className="flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors shadow-sm w-10 h-10"
+      className="flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors shadow-sm w-8 h-8"
       aria-label="Profile"
     >
       {user.imageUrl ? (

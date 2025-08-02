@@ -1,10 +1,11 @@
 "use client";
 import { Home, Search, SquarePlus, User, LogOutIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import ProfileButton from "./profileButton";
 import { useState } from "react";
 import AlertLogOutMobile from "./AlertDialogMobile";
+import Image from "next/image";
 
 const navItems = [
   { href: "/explore", icon: Home, label: "Explore" },
@@ -12,6 +13,7 @@ const navItems = [
 ];
 
 export default function MobileNavBar() {
+  const router = useRouter();
   const pathname = usePathname();
   const [profileActive, setProfileActive] = useState(false);
 
@@ -20,7 +22,15 @@ export default function MobileNavBar() {
     pathname.startsWith("/profile") || pathname.startsWith("/account");
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-t border-gray-200 flex justify-center gap-6 items-center h-[70px] md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/60 backdrop-blur-lg  flex justify-center gap-3 items-center  md:hidden " >
+      
+        <div
+          className=""
+          onClick={() => router.push("/")}
+        >
+          <Image src="/favicon.ico" alt="Logo" width={40} height={40} ></Image>
+        </div>
+    
       {navItems.map(({ href, icon: Icon, label }) => {
         const isActive = pathname === href;
         return (
@@ -42,9 +52,7 @@ export default function MobileNavBar() {
               className={`text-xs mt-1 font-medium ${
                 isActive ? "text-black" : "text-gray-800"
               }`}
-            >
-              {label}
-            </span>
+            ></span>
           </Link>
         );
       })}
@@ -65,13 +73,6 @@ export default function MobileNavBar() {
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full border-2"></span>
           )}
         </div>
-        <span
-          className={`text-xs mt-1 font-medium ${
-            isProfileActive || profileActive ? "text-black" : "text-gray-700"
-          }`}
-        >
-          Profile
-        </span>
       </div>
     </nav>
   );

@@ -1,11 +1,15 @@
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers"
+export const dynamic = "force-dynamic";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function GET(req: NextRequest) {
   try {
-    const token = req.cookies.get("token")?.value;
+     const cookieStore = cookies();
+    const token =  (await cookieStore).get("token")?.value
+
 
     if (!token) {
       return NextResponse.json(
@@ -20,10 +24,6 @@ export async function GET(req: NextRequest) {
 
     const user = jwt.verify(token, JWT_SECRET); // this throws if token is invalid
 
-    const decoded = jwt.decode(token);
-    console.log("Decoded token:", decoded);
-    console.log("JWT_SECRET:", process.env.JWT_SECRET);
-    console.log("Token:", token);
 
     return NextResponse.json(
       { loggedIn: true, message: "Token found", user },
