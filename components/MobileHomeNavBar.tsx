@@ -8,36 +8,17 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useState, useEffect } from "react";
-import { LogIn, Menu } from "lucide-react";
+import { LogIn, Menu, Rocket } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 import { PayLoad } from "@/lib/type";
 import Image from "next/image";
+import { gravitas } from "@/lib/font";
 export default function MobileHomeNavbar({ user }: { user: PayLoad }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   const router = useRouter();
-  //   console.log(user);
 
-  //   // Handle scroll effect for navbar
-  //   useEffect(() => {
-  //     const handleScroll = () => {
-  //       setScrolled(window.scrollY > 20);
-  //     };
-
-  //     window.addEventListener("scroll", handleScroll);
-  //     return () => window.removeEventListener("scroll", handleScroll);
-  //   }, []);
-  //   useEffect(() => {
-  //     async function getUserData() {
-  //       const user = await getUser();
-  //       setUSer(user);
-  //     }
-  //     getUserData();
-  //   }, []);
-
-  // Close mobile menu when clicking links
   const closeMenu = () => setIsOpen(false);
 
   const navItems = [
@@ -49,28 +30,30 @@ export default function MobileHomeNavbar({ user }: { user: PayLoad }) {
   return (
     <div className="block md:hidden ">
       <nav className="flex justify-between items-center gap-14  w-full  mx-auto p-3 rounded-2xl bg-white/30 backdrop-blur-2xl fixed  z-[999] left-1/2 -translate-x-1/2">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap">
           <Image src="/favicon.ico" alt="Logo" width={50} height={50}></Image>
 
-          <div className="text-xl uppercase font-bold">Prompt Vault</div>
+          <div className={`text-md uppercase text-gray-700 font-bold ${gravitas.className}`}>
+            Prompt Vault
+          </div>
         </div>
 
         <Sheet>
           <SheetTrigger>
             {" "}
             <div className="cursor-pointer">
-              <Menu />
+              <Menu  strokeWidth={3} size={30} />
             </div>
           </SheetTrigger>
-          <SheetContent className="z-[999] bg-white">
+          <SheetContent className="z-[999] bg-white border-none">
             <SheetTitle></SheetTitle>
             <div className="space-y-3 p-4">
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 uppercase ">
                 {navItems.map((nav) => (
                   <a
                     href={nav.href}
                     key={nav.href}
-                    className="px-2 text-md cursor font-medium text-gray-800 hover:text-purple-600"
+                    className="px-2 text-md cursor font-medium text-gray-700 hover:text-purple-600"
                   >
                     {nav.name}
                   </a>
@@ -83,20 +66,13 @@ export default function MobileHomeNavbar({ user }: { user: PayLoad }) {
                   onClick={() =>
                     router.push(`${user ? "/explore" : "/signIn"}`)
                   }
-                  className="relative px-5 py-1  rounded  text-white bg-gray-500  font-bold cursor-pointer "
+                  className="relative px-5 py-3  text-xl  rounded-full   text-white  font-bold bg-gradient-to-r from-purple-700 to-blue-800 cursor-pointer hover:scale-[1.02] group  flex items-center gap-3"
                 >
-                  <span className="flex items-center gap-1">
-                    Login <LogIn size={20} />
+                  Launch App{" "}
+                  <span className="group-hover:-translate-y-1 transition-transform ">
+                    <Rocket />
                   </span>
                 </button>
-                {!user && (
-                  <button
-                    onClick={() => router.push("/signUp")}
-                    className="relative px-5 py-1  rounded  text-white  font-bold bg-gradient-to-r from-purple-700 to-blue-800 cursor-pointer"
-                  >
-                    Create an account
-                  </button>
-                )}
               </div>
             </div>
           </SheetContent>

@@ -65,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} ${roboto.variable} ${montserrat.variable}  antialiased bg-white`}
+        className={`${poppins.className}   antialiased bg-white`}
       >
         <div className="flex min-h-screen">
           {/* Fixed sidebar for desktop */}

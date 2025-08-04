@@ -40,14 +40,14 @@ export default function HomePage() {
       </header>
       <main
         id="home"
-        className="pt-[70px] md:pt-[110px] px-4 max-w-7xl  mx-auto "
+        className="pt-[100px] md:pt-[150px] px-4 max-w-7xl  mx-auto "
       >
         <Hero user={user}></Hero>
 
-        <section id="about" className="pb-0 sm:pb-[100px] py-[100px]  ">
+        <section id="about" className="pb-0 pt-[70px] sm:pb-[100px] py-[100px]   ">
           <div>
             <h2 className="text-3xl sm:text-5xl text-center uppercase font-bold bg-gradient-to-r from-purple-700 to-blue-800 bg-clip-text text-transparent">
-              What Is Handy?{" "}
+              What Is prompt vault?{" "}
             </h2>
             <p className="text-lg text-left sm:text-center w-full max-w-[900px] mx-auto mt-10 leading-9 text-gray-700">
               Handy is your go-to space for saving, remixing, and sharing AI

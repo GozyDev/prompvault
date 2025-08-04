@@ -62,7 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} ${roboto.variable} ${montserrat.variable}  antialiased bg-white`}
+        className={`${poppins.className}   antialiased bg-white`}
       >
         <div className="min-h-screen w-full">
             <div>{children}</div>

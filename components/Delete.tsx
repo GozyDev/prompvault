@@ -69,7 +69,7 @@ export default function Delete({ id }: { id: string }) {
             </AlertDialogTitle>
 
             <AlertDialogDescription className="mt-2 text-gray-600">
-              This will permanently remove all your data from our servers.
+              This will permanently remove  your data from our servers.
               <span className="block mt-1 font-medium text-red-600">
                 This action cannot be undone.
               </span>
@@ -90,7 +90,7 @@ export default function Delete({ id }: { id: string }) {
                   Deleting...
                 </>
               ) : (
-                "Delete Account"
+                "Delete Prompt"
               )}
             </AlertDialogAction>
 
