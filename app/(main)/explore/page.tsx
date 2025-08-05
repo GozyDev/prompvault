@@ -30,6 +30,8 @@ const Explore = () => {
   const [showLeftScroll, setShowLeftScroll] = useState(false);
   const [showRightScroll, setShowRightScroll] = useState(true);
 
+
+
   // Category options with icons
   const categoryOptions = [
     { value: "all", label: "All Prompts", icon: <Globe /> },
