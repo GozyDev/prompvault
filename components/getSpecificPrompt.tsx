@@ -1,15 +1,16 @@
 "use client";
-import { Copy, WandSparkles, Link as LinkIcon, Wand2 } from "lucide-react";
+import { Copy,  Link as LinkIcon, Wand2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import UserPCard from "./userButton";
 import OpenDialog from "./OpenDialog";
 import getUser from "./me";
 import Stats from "./action";
-import EditDialog from "./editDialog";
+
 import { usePromptStore } from "@/stores/usePromptStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import PopOver from "./PopOver";
 
 export default function Specific({ id }: { id: string }) {
   const prompt = usePromptStore((state) =>
@@ -23,16 +24,6 @@ export default function Specific({ id }: { id: string }) {
 
   const router = useRouter();
   // Get edit details if prompt exists
-  const editDetail = prompt
-    ? {
-        title: prompt.title,
-        content: prompt.content,
-        imageUrl: prompt.imageUrl,
-        categories: prompt.categories,
-        tags: prompt.tags,
-        metadata: prompt.metadata,
-      }
-    : null;
 
   useEffect(() => {
     async function fetchPrompt() {
@@ -141,16 +132,7 @@ export default function Specific({ id }: { id: string }) {
             <div className="flex justify-between items-center">
               <Stats prompt={prompt} dbUserId={userId} />
               <div className="flex items-center gap-3">
-                {editDetail && prompt.user.id === userId && (
-                  <EditDialog editDetail={editDetail} id={prompt.id} />
-                )}
-                <Link
-                  href={`/create?remix=${prompt.id}`}
-                  className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-2xl hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-[.98] cursor-pointer"
-                >
-                  <span className="font-medium">Remix</span>
-                  <WandSparkles className="w-4 h-4" />
-                </Link>
+                <PopOver prompt={prompt} userId={userId} />
               </div>
             </div>
           </div>
@@ -175,7 +157,7 @@ export default function Specific({ id }: { id: string }) {
             {/* Remix Indicator */}
             {originalPrompt && (
               <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg flex items-start">
-                <LinkIcon className="w-5 h-5 text-purple-600 mt-0.5 mr-2 flex-shrink-0 "  />
+                <LinkIcon className="w-5 h-5 text-purple-600 mt-0.5 mr-2 flex-shrink-0 " />
                 <div>
                   <p className="text-sm font-medium text-purple-800 relative">
                     Remixed from:{" "}
