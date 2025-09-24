@@ -10,18 +10,21 @@
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.14",
-    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.525.0",
     "next": "15.3.4",
+    "next-share": "^0.27.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-select": "^5.10.1",
     "react-toastify": "^11.0.5",
     "tailwind-merge": "^3.3.1",
+    "vaul": "^1.1.2",
     "zustand": "^5.0.6"
   },
   "devDependencies": {
