@@ -165,11 +165,11 @@ export default function EditDialog({
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <button className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-50 to-blue-50 text-purple-700 rounded-2xl border border-purple-200 hover:shadow-md hover:-translate-y-0.5 transition-all active:scale-95 cursor-pointer">
+      <SheetTrigger>
+        <span className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-50 to-blue-50 text-purple-700 rounded-2xl border border-purple-200 hover:shadow-md hover:-translate-y-0.5 transition-all active:scale-95 cursor-pointer">
           <Pencil className="w-4 h-4" />
           <span className="font-medium">Edit</span>
-        </button>
+        </span>
       </SheetTrigger>
 
       <SheetContent className="bg-gradient-to-b from-white to-gray-50 border-l border-gray-200 shadow-xl w-full max-w-[500px] p-0">

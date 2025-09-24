@@ -13,16 +13,24 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Download, EllipsisVertical, Share, WandSparkles } from "lucide-react";
+import {
+  Check,
+  Download,
+  EllipsisVertical,
+  Share,
+  WandSparkles,
+} from "lucide-react";
 import { Prompt } from "@/lib/type";
 
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import EditDialog from "./editDialog";
 import Link from "next/link";
+import Image from "next/image";
 
 const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
   const [isDownloading, setIsDownloading] = useState(false);
+  const [copy, setCopy] = useState(false);
 
   const editDetail = prompt
     ? {
@@ -123,7 +131,7 @@ const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
             </DrawerTrigger>
             <DrawerContent className="bg-white rounded-t-2xl ">
               <div className="w-full max-w-5xl mx-auto">
-                <DrawerHeader className="text-center">
+                <DrawerHeader className="text-center hidden">
                   <DrawerTitle>Share this prompt</DrawerTitle>
                   <DrawerDescription>
                     Share this amazing prompt with others
@@ -141,12 +149,14 @@ const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-xl bg-green-50 hover:bg-green-100 transition-colors"
+                      className="flex flex-col items-center gap-2 p-3 rounded-full bg-green-50 hover:bg-green-100 transition-colors"
                     >
-                      <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold">WA</span>
-                      </div>
-                      <span className="text-sm font-medium">WhatsApp</span>
+                      <Image
+                        src="/Drawer/whatsapp-icon-logo-svgrepo-com.svg"
+                        alt="logo"
+                        width={50}
+                        height={50}
+                      ></Image>
                     </a>
 
                     {/* Facebook */}
@@ -158,12 +168,14 @@ const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-xl bg-blue-50 hover:bg-blue-100 transition-colors"
+                      className="flex flex-col items-center gap-2 p-3 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
                     >
-                      <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold">f</span>
-                      </div>
-                      <span className="text-sm font-medium">Facebook</span>
+                      <Image
+                        src="/Drawer/facebook-network-communication-internet-interaction-svgrepo-com.svg"
+                        alt="logo"
+                        width={50}
+                        height={50}
+                      ></Image>
                     </a>
 
                     {/* Twitter */}
@@ -177,12 +189,14 @@ const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-xl bg-blue-50 hover:bg-blue-100 transition-colors"
+                      className="flex flex-col items-center gap-2 p-3 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
                     >
-                      <div className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold">𝕏</span>
-                      </div>
-                      <span className="text-sm font-medium">Twitter</span>
+                      <Image
+                        src="/Drawer/twitter-svgrepo-com.svg"
+                        alt="logo"
+                        width={50}
+                        height={50}
+                      ></Image>
                     </a>
 
                     {/* Telegram - FIXED */}
@@ -196,12 +210,14 @@ const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-xl bg-blue-50 hover:bg-blue-100 transition-colors"
+                      className="flex flex-col items-center gap-2 p-3 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
                     >
-                      <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold">TG</span>
-                      </div>
-                      <span className="text-sm font-medium">Telegram</span>
+                      <Image
+                        src="/Drawer/telegram-svgrepo-com.svg"
+                        alt="logo"
+                        width={50}
+                        height={50}
+                      ></Image>
                     </a>
                   </div>
                   {/* Copy Link Section */}
@@ -227,11 +243,14 @@ const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
                               ? window.location.href
                               : ""
                           );
-                          toast.success("Link copied to clipboard!");
+                          setCopy(true);
+                          setTimeout(() => {
+                            setCopy(false);
+                          }, 1500);
                         }}
-                        className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                        className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
                       >
-                        Copy
+                        {!copy ? "Copy" : <Check />}
                       </button>
                     </div>
                   </div>
