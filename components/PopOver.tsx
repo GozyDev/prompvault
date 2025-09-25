@@ -15,10 +15,8 @@ import {
 } from "@/components/ui/drawer";
 import { Check, Download, Ellipsis, Send, WandSparkles } from "lucide-react";
 import { Prompt } from "@/lib/type";
-
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-
 import Link from "next/link";
 import Image from "next/image";
 
@@ -33,6 +31,11 @@ const PopOver = ({
 }) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [copy, setCopy] = useState(false);
+
+  // Create clean share URL
+  const shareUrl = typeof window !== "undefined" 
+    ? `${window.location.origin}/prompt/${prompt.id}`
+    : "";
 
   const editDetail = prompt
     ? {
@@ -54,38 +57,26 @@ const PopOver = ({
     setIsDownloading(true);
 
     try {
-      // Create clean filename from project title
       const cleanFileName =
         prompt.title
           .toLowerCase()
           .replace(/[^a-z0-9]/g, "_")
           .slice(0, 50) + ".jpg";
 
-      // Method 1: Fetch and download (most reliable)
       const response = await fetch(prompt.imageUrl);
       const blob = await response.blob();
-
-      // Create download link
       const url = window.URL.createObjectURL(blob);
-      console.log("Url", url);
-      console.log("Res", response);
       const link = document.createElement("a");
       link.href = url;
-      link.download = cleanFileName; // This sets the filename
-
-      // Trigger download
+      link.download = cleanFileName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
-      // Clean up
       window.URL.revokeObjectURL(url);
 
       toast.success(`Downloaded: ${cleanFileName}`);
     } catch (error) {
       console.error("Download failed:", error);
-
-      // Fallback: Open in new tab if fetch fails
       const fallbackUrl = prompt?.imageUrl.replace(
         "/upload/",
         "/upload/fl_attachment/"
@@ -105,7 +96,6 @@ const PopOver = ({
         </span>
       </PopoverTrigger>
       <PopoverContent className="bg-white border-none rounded-2xl">
-        {" "}
         <div className="flex flex-col gap-4">
           <button
             onClick={handleDownload}
@@ -145,9 +135,7 @@ const PopOver = ({
                     {/* WhatsApp */}
                     <a
                       href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                        typeof window !== "undefined"
-                          ? window.location.href
-                          : ""
+                        `Check out this prompt: ${prompt.title} - ${shareUrl}`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -158,15 +146,13 @@ const PopOver = ({
                         alt="logo"
                         width={50}
                         height={50}
-                      ></Image>
+                      />
                     </a>
 
                     {/* Facebook */}
                     <a
                       href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                        typeof window !== "undefined"
-                          ? window.location.href
-                          : ""
+                        shareUrl
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -177,7 +163,7 @@ const PopOver = ({
                         alt="logo"
                         width={50}
                         height={50}
-                      ></Image>
+                      />
                     </a>
 
                     {/* Twitter */}
@@ -185,9 +171,7 @@ const PopOver = ({
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                         `Check out: ${prompt.title}`
                       )}&url=${encodeURIComponent(
-                        typeof window !== "undefined"
-                          ? window.location.href
-                          : ""
+                        shareUrl
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -198,15 +182,13 @@ const PopOver = ({
                         alt="logo"
                         width={50}
                         height={50}
-                      ></Image>
+                      />
                     </a>
 
-                    {/* Telegram - FIXED */}
+                    {/* Telegram */}
                     <a
                       href={`https://t.me/share/url?url=${encodeURIComponent(
-                        typeof window !== "undefined"
-                          ? window.location.href
-                          : ""
+                        shareUrl
                       )}&text=${encodeURIComponent(
                         `Check out this prompt: ${prompt.title}`
                       )}`}
@@ -219,7 +201,7 @@ const PopOver = ({
                         alt="logo"
                         width={50}
                         height={50}
-                      ></Image>
+                      />
                     </a>
                   </div>
                   {/* Copy Link Section */}
@@ -230,21 +212,13 @@ const PopOver = ({
                     <div className="flex gap-2">
                       <input
                         type="text"
-                        value={
-                          typeof window !== "undefined"
-                            ? window.location.href
-                            : ""
-                        }
+                        value={shareUrl}
                         readOnly
                         className="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50"
                       />
                       <button
                         onClick={() => {
-                          navigator.clipboard.writeText(
-                            typeof window !== "undefined"
-                              ? window.location.href
-                              : ""
-                          );
+                          navigator.clipboard.writeText(shareUrl);
                           setCopy(true);
                           setTimeout(() => {
                             setCopy(false);
