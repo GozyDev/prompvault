@@ -13,22 +13,24 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import {
-  Check,
-  Download,
-  EllipsisVertical,
-  Share,
-  WandSparkles,
-} from "lucide-react";
+import { Check, Download, Ellipsis, Send, WandSparkles } from "lucide-react";
 import { Prompt } from "@/lib/type";
 
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import EditDialog from "./editDialog";
+
 import Link from "next/link";
 import Image from "next/image";
 
-const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
+const PopOver = ({
+  prompt,
+  userId,
+  size,
+}: {
+  prompt: Prompt;
+  userId: string;
+  size: number;
+}) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [copy, setCopy] = useState(false);
 
@@ -98,9 +100,9 @@ const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="shadow p-2 rounded bg-gray-50">
-          <EllipsisVertical />
-        </button>
+        <span className="">
+          <Ellipsis size={size} />
+        </span>
       </PopoverTrigger>
       <PopoverContent className="bg-white border-none rounded-2xl">
         {" "}
@@ -108,7 +110,7 @@ const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
           <button
             onClick={handleDownload}
             disabled={isDownloading}
-            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-50 to-blue-50 text-purple-700 rounded-2xl border border-purple-200 hover:shadow-md hover:-translate-y-0.5 transition-all active:scale-95 cursor-pointer"
+            className="flex gap-5 cursor-pointer"
           >
             {isDownloading ? (
               <>
@@ -117,16 +119,16 @@ const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
               </>
             ) : (
               <>
-                <Download />
-                <span>Download</span>
+                <Download size={20} />
+                <span className="font-light">Download image</span>
               </>
             )}
           </button>
 
           <Drawer>
             <DrawerTrigger asChild>
-              <button className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-50 to-blue-50 text-purple-700 rounded-2xl border border-purple-200 hover:shadow-md hover:-translate-y-0.5 transition-all active:scale-95 cursor-pointer">
-                <Share /> Share
+              <button className="flex gap-5 cursor-pointer">
+                <Send size={20} /> Share
               </button>
             </DrawerTrigger>
             <DrawerContent className="bg-white rounded-t-2xl ">
@@ -265,9 +267,6 @@ const PopOver = ({ prompt, userId }: { prompt: Prompt; userId: string }) => {
               </div>
             </DrawerContent>
           </Drawer>
-          {editDetail && prompt.user.id === userId && (
-            <EditDialog editDetail={editDetail} id={prompt.id} />
-          )}
           <Link
             href={`/create?remix=${prompt.id}`}
             className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-2xl hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-[.98] cursor-pointer"

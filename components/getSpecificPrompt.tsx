@@ -1,5 +1,5 @@
 "use client";
-import { Copy,  Link as LinkIcon, Wand2 } from "lucide-react";
+import { Copy, Link as LinkIcon, Wand2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import UserPCard from "./userButton";
@@ -11,6 +11,7 @@ import { usePromptStore } from "@/stores/usePromptStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PopOver from "./PopOver";
+import EditDialog from "./editDialog";
 
 export default function Specific({ id }: { id: string }) {
   const prompt = usePromptStore((state) =>
@@ -24,6 +25,16 @@ export default function Specific({ id }: { id: string }) {
 
   const router = useRouter();
   // Get edit details if prompt exists
+  const editDetail = prompt
+    ? {
+        title: prompt.title,
+        content: prompt.content,
+        imageUrl: prompt.imageUrl,
+        categories: prompt.categories,
+        tags: prompt.tags,
+        metadata: prompt.metadata,
+      }
+    : null;
 
   useEffect(() => {
     async function fetchPrompt() {
@@ -132,7 +143,11 @@ export default function Specific({ id }: { id: string }) {
             <div className="flex justify-between items-center">
               <Stats prompt={prompt} dbUserId={userId} />
               <div className="flex items-center gap-3">
-                <PopOver prompt={prompt} userId={userId} />
+                <PopOver size={32} prompt={prompt} userId={userId} />
+
+                {editDetail && prompt.user.id === userId && (
+                  <EditDialog editDetail={editDetail} id={prompt.id} />
+                )}
               </div>
             </div>
           </div>

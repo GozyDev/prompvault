@@ -251,7 +251,7 @@ const Explore = () => {
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto p-2 md:px-4  pt-[60px] md:pt-[85px]">
+      <div className="pt-[60px] md:pt-[85px]">
         {/* Prompts Grid */}
         <ExploreM prompts={filteredPrompts} dbUserId={userId} />
 

@@ -67,12 +67,12 @@ export default function RootLayout({
       <body
         className={`${poppins.className}   antialiased bg-white`}
       >
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen p-2 w-[100%]">
           {/* Fixed sidebar for desktop */}
           <aside className="hidden md:flex md:flex-col md:w-[80px] bg-white border-r border-gray-300 z-30 fixed top-0 left-0 h-screen sh">
             <Navbar />
           </aside>
-          <div className="relative  w-full md:ml-[80px]">
+          <div className="relative  flex-1 md:ml-[80px] ">
             {/* Fixed search bar for desktop */}
 
             {/* Add padding top for main content to avoid overlap with fixed search bar */}
