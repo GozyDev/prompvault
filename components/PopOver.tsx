@@ -95,7 +95,7 @@ const PopOver = ({
           <Ellipsis size={size} />
         </span>
       </PopoverTrigger>
-      <PopoverContent className="bg-white border-none rounded-2xl">
+      <PopoverContent className="bg-white border-none rounded-2xl p-4">
         <div className="flex flex-col gap-4">
           <button
             onClick={handleDownload}
@@ -139,13 +139,14 @@ const PopOver = ({
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-full bg-green-50 hover:bg-green-100 transition-colors"
+                      className="flex flex-col items-center gap-2 p-1 rounded-full bg-green-50 hover:bg-green-100 transition-colors"
                     >
                       <Image
                         src="/Drawer/whatsapp-icon-logo-svgrepo-com.svg"
                         alt="logo"
                         width={50}
                         height={50}
+                        className="w-[30px] md:w-[50px]"
                       />
                     </a>
 
@@ -156,13 +157,15 @@ const PopOver = ({
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
+                      className="flex flex-col items-center gap-2 p-1 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
                     >
                       <Image
                         src="/Drawer/facebook-network-communication-internet-interaction-svgrepo-com.svg"
                         alt="logo"
                         width={50}
                         height={50}
+                        className="w-[30px] md:w-[50px]"
+
                       />
                     </a>
 
@@ -175,13 +178,15 @@ const PopOver = ({
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
+                      className="flex flex-col items-center gap-2 p-1 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
                     >
                       <Image
                         src="/Drawer/twitter-svgrepo-com.svg"
                         alt="logo"
                         width={50}
                         height={50}
+                        className="w-[30px] md:w-[50px]"
+
                       />
                     </a>
 
@@ -194,13 +199,15 @@ const PopOver = ({
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
+                      className="flex flex-col items-center gap-2 p-1 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
                     >
                       <Image
                         src="/Drawer/telegram-svgrepo-com.svg"
                         alt="logo"
                         width={50}
                         height={50}
+                        className="w-[30px] md:w-[50px]"
+
                       />
                     </a>
                   </div>
@@ -209,7 +216,7 @@ const PopOver = ({
                     <label className="text-sm font-medium text-gray-700 mb-2 block">
                       Or copy link
                     </label>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col md:flex-row gap-2">
                       <input
                         type="text"
                         value={shareUrl}
