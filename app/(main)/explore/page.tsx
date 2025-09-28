@@ -4,7 +4,6 @@ import { usePromptStore } from "@/stores/usePromptStore";
 import { ExploreM } from "@/components/explore";
 import getUser from "@/components/me";
 
-
 import {
   ChevronLeft,
   ChevronRight,
@@ -29,8 +28,6 @@ const Explore = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftScroll, setShowLeftScroll] = useState(false);
   const [showRightScroll, setShowRightScroll] = useState(true);
-
-
 
   // Category options with icons
   const categoryOptions = [
@@ -141,23 +138,29 @@ const Explore = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white p-4 ">
-        <div className=" mx-auto">
-          {/* Category Skeleton */}
-          <div className="w-full flex gap-2 mb-8 animate-pulse overflow-hidden ">
-            {[...Array(10)].map((_, i) => (
-              <div key={i} className="h-10 w-24 rounded-full bg-gray-200" />
-            ))}
+      <div className="  bg-white ">"
+        {/* Outer clipping box */}
+        <div className="fixed left-0  md:pl-[90px] top-0 z-10 bg-white  w-full ">
+          {/* Inner row: nowrap so it grows horizontally */}
+          <div className="  max-w-full overflow-hidden ">
+            <div className="flex gap-2 py-3 animate-pulse flex-nowrap">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex-none h-10 w-40 rounded-full bg-gray-200"
+                />
+              ))}
+            </div>
           </div>
+        </div>
 
-          {/* Prompts Skeleton */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-pulse">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="rounded-xl overflow-hidden">
-                <div className="bg-gray-200 aspect-square w-full" />
-              </div>
-            ))}
-          </div>
+        {/* Example grid prompt skeleton below (clipped children inside each card) */}
+        <div className="pt-[40px] md:pt-[50px] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="overflow-hidden rounded-2xl">
+              <div className="bg-gray-200 aspect-square w-full" />
+            </div>
+          ))}
         </div>
       </div>
     );
